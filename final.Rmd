@@ -1,0 +1,104 @@
+---
+title: "final"
+author: "Soojung"
+date: "4/2/2022"
+output: github_document
+---
+
+### Load Packages 
+
+```{r, message=FALSE}
+library(tidyverse)
+library(knitr)
+library(ggplot2)
+```
+
+### Load Data
+
+```{r, include=FALSE}
+interview_data <- read_csv("C:/Users/desre/Desktop/car_ownership_data.csv")
+```
+
+#### Low income households: car ownership and travel
+
+#### 1. Descriptive statistics
+
+```{r, include=FALSE}
+
+summary(interview_data)
+
+
+```
+
+
+2. The frequency of commute travel by race/ethnicity, gender
+
+```{r}
+ggplot(data = interview_data, aes(x = gender, y = daily_ctime, color=gender, fill=gender))+
+  geom_boxplot(outlier.shape = NA, alpha=0.5) +
+  geom_jitter()
+
+
+
+ggplot(data = interview_data, aes(x = gender, y = daily_ttime_other, color=gender, fill=gender))+
+  geom_boxplot(outlier.shape = NA, alpha=0.5) +
+  geom_jitter()
+
+```
+
+3. Scatterplot: frequency of travel and children
+
+```{r}
+ggplot(data = interview_data) + 
+  geom_point(mapping = aes(x=children, y=daily_ttime_other)) +
+  labs(x="Number of Children", y="Daily Travel Time for Other Purposes(min)")
+
+```
+
+
+4. sort out: single mothers with child with cars <-> married mothers with child with cars
+
+```{r}
+
+interview_data %>%
+  filter(children>0 & gender=="F" & Own_car=="yes") %>%
+  group_by(marital_status) %>%
+  summarise_at(vars(daily_ctime, daily_ttime_other), funs(mean))%>%
+  rename('mean_daily_ctime' = daily_ctime,'mean_daily_ttime_other' = daily_ttime_other) %>%
+  kable()
+
+
+```
+
+5.2. Visualization
+
+```{r}
+
+driving_mothers <-interview_data %>%
+  filter(children>0 & gender=="F" & Own_car=="yes") %>%
+  group_by(marital_status) %>%
+  summarise_at(vars(daily_ctime, daily_ttime_other), funs(mean))%>%
+  rename('mean_daily_ctime' = daily_ctime,'mean_daily_ttime_other' = daily_ttime_other)
+
+  ggplot(driving_mothers, aes(x=marital_status, y=mean_daily_ctime, color=marital_status,fill=marital_status)) +
+  geom_bar(stat='identity')
+  
+  ggplot(driving_mothers, aes(x=marital_status, y=mean_daily_ttime_other, color=marital_status,fill=marital_status)) +
+  geom_bar(stat='identity')
+
+```
+
+
+
+
+6. used cars and repairs
+
+```{r}
+new_data <- interview_data %>% mutate(used = Car_acq)
+new_data$used[new_data$used=="gifted"] = "used"
+new_data %>% select(used, repairs) %>% 
+  group_by(used, repairs)  %>% 
+  tally() %>% 
+  spread(repairs, n)
+
+```
