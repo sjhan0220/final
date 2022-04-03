@@ -1,0 +1,88 @@
+---
+title: "lab 3"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+install.packages("palmerpenguins")
+library(palmerpenguins)
+library(tidyverse)
+
+
+view(penguins)
+dim(penguins)
+colnames(penguins)
+
+
+```
+
+### SIngle trait distribution
+
+```{r}
+penguins %>%
+  ggplot() +
+  geom_density(mapping = aes(x = bill_length_mm, fill=species), alpha=0.5)
+
+```
+
+```{r}
+penguins %>%
+  ggplot() +
+  geom_histogram(mapping = aes(x = bill_length_mm, fill=species)) +
+  facet_wrap(~species, nrow=3)
+
+```
+
+
+```{r}
+penguins %>%
+  ggplot(mapping = aes(x = body_mass_g, y=flipper_length_mm, color=species)) +
+  geom_point() +
+  geom_smooth(method="lm")
+```
+
+
+
+```{r}
+penguins %>%
+  ggplot(mapping = aes(x = bill_length_mm, y=bill_depth_mm, color=sex)) +
+  geom_point(size=1) +
+  facet_wrap(~species)
+```
+penguins %>%
+  ggplot(mapping = aes(x=flipper_length_mm, y=sex, color=sex)) +
+  geom_boxplot(outlier.alpha = 0, alpha=0) +
+  geom_jitter(width = 0, size=1) +
+  coord_flip() +
+  facet_wrap(~species)
+
+
+```{r}
+penguins %>%
+  ggplot(mapping = aes(x=flipper_length_mm, y=sex, color=sex)) +
+  geom_boxplot(outlier.alpha = 0, alpha=0) +
+  geom_jitter(width = 0, size=1) +
+  coord_flip() +
+  facet_wrap(~species)
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+```{r}
+
+```

@@ -31,7 +31,7 @@ summary(interview_data)
 ```
 
 
-2. The frequency of commute travel by race/ethnicity, gender
+#### 2. The travel time of commute/non-commute travel by gender
 
 ```{r}
 ggplot(data = interview_data, aes(x = gender, y = daily_ctime, color=gender, fill=gender))+
@@ -46,7 +46,7 @@ ggplot(data = interview_data, aes(x = gender, y = daily_ttime_other, color=gende
 
 ```
 
-3. Scatterplot: frequency of travel and children
+#### 3. Scatterplot: correlation between travel time and children
 
 ```{r}
 ggplot(data = interview_data) + 
@@ -56,9 +56,9 @@ ggplot(data = interview_data) +
 ```
 
 
-4. sort out: single mothers with child with cars <-> married mothers with child with cars
+#### 4.single mothers with child with cars <-> married mothers with child with cars
 
-```{r}
+```{r, warning=FALSE}
 
 interview_data %>%
   filter(children>0 & gender=="F" & Own_car=="yes") %>%
@@ -70,7 +70,7 @@ interview_data %>%
 
 ```
 
-5.2. Visualization
+#### 4.2. Visualization
 
 ```{r}
 
@@ -91,7 +91,7 @@ driving_mothers <-interview_data %>%
 
 
 
-6. used cars and repairs
+#### 5. used cars and repairs
 
 ```{r}
 new_data <- interview_data %>% mutate(used = Car_acq)
